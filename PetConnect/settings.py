@@ -150,3 +150,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # Storage for compressed static files using WhiteNoise in production
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+]

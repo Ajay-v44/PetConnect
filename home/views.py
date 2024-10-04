@@ -8,6 +8,13 @@ def index (request):
     except Exception as e:
         print(e)
         return redirect(page404)
+  
+def login_user(request):
+    try:
+        return render(request,'login.html')
+    except Exception as e:
+        print(e)
+        return redirect(page404)   
         
 def page404(request):
     return render(request, '404.html')
