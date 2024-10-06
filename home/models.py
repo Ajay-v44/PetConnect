@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 # Create your models here.
 
 class UserProfile(models.Model):
@@ -30,4 +31,4 @@ class Posts(models.Model):
     image =  models.ImageField(
         upload_to='images', height_field=None, width_field=None, max_length=None, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateField(auto_now=True)
+    date = models.DateTimeField(default=timezone.now)

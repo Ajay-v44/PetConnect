@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate, login, logout
 
-from home.models import UserProfile
+from home.models import *
 
 # Create your views here.
 
@@ -90,10 +90,36 @@ def user_profile(request):
 def viewPublicProfile(request, username):
     try:
         query = UserProfile.objects.filter(username=username)
-        return render(request, 'public_profile.html', {"query": query})
+        if query:
+            return render(request, 'public_profile.html', {"query": query})
+        else:
+            return redirect(page404)            
     except Exception as e:
         print(e)
         return redirect(page404)
-  
+    
+@login_required(login_url='/login')
+def createpost(request):
+    try:
+        if request.method=="POST":
+            Posts.objects.create(
+                title=request.POST['title'],description=request.POST['description'],post_type=request.POST['category'],image=request.FILES.get('image'),user=request.user)
+            messages.info(request, "Post Created Sccessfully")
+            return redirect(index)
+        return render(request, 'create_post.html')
+          
+    except Exception as e:
+        print(e)
+        return redirect(page404)
+
+def get_posts(request):
+    try:
+        posts=Posts.objects.all()
+        return render(request,'all_posts.html',{"posts":posts})
+    except Exception as e:
+        print(e)
+        return redirect(page404)
+
 def page404(request):
+    
     return render(request, '404.html')
