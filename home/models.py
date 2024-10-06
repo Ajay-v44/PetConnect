@@ -10,3 +10,8 @@ class UserProfile(models.Model):
     banner = models.ImageField(
         upload_to='images', height_field=None, width_field=None, max_length=None, blank=True)
     about = models.TextField()
+    phone_number=models.CharField(max_length=150)
+    phone_number_2=models.CharField(max_length=150,null=True,blank=True)
+    twitter = models.CharField(max_length=150, blank=True)
+    fb = models.CharField(max_length=150, blank=True)
+    insta = models.CharField(max_length=150, blank=True)

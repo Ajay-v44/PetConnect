@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate, login, logout
 
+from home.models import UserProfile
+
 # Create your views here.
 
 def index (request):
@@ -16,7 +18,24 @@ def index (request):
   
 def login_user(request):
     try:
-        return render(request,'login.html')
+        if request.method == "POST":
+            username = request.POST['username']
+            password = request.POST['password']
+            if username != "" and password != "":
+                query = authenticate(
+                    request, username=username, password=password)
+                if query is None:
+                    messages.error(request, "Invalid Credentials")
+                else:
+                    login(request, query)
+                    messages.success(request, 'Welcome To Pet Connect')
+                    if UserProfile.objects.filter(user=request.user).exists():
+                        return redirect(index)
+                    else:
+                        return redirect(addUserProfile)
+            else:
+                messages.warning(request, "Null Values are not allowed")
+        return render(request, 'login.html')
     except Exception as e:
         print(e)
         return redirect(page404)  
@@ -43,6 +62,19 @@ def register_user(request):
     except Exception as e:
         print(e)
         return redirect(page404)  
+ 
+def addUserProfile(request):
+    try:
+        if request.method == "POST":
+            UserProfile.objects.create(user=request.user, profilepicture=request.FILES.get('profile'), banner=request.FILES.get(
+                'banner'), about=request.POST['about'], phone_number=request.POST['phone1'], phone_number_2=request.POST['phone2'], fb=request.POST['facebook'], twitter=request.POST['twitter'], insta=request.POST['instagram'])
+            messages.info(request, "Data Updated Sccessfully")
+            return redirect(index)
+        return render(request, 'add_profile.html')
+    except Exception as e:
+        print(e)
+        return redirect(page404)
+ 
  
         
 def page404(request):
