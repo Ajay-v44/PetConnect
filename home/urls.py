@@ -11,5 +11,6 @@ urlpatterns = [
     path('createpost/',createpost,name="createpost"),
     path('posts/',get_posts,name='posts'),
     path('page404/',page404,name='page404'),
+    path('logout/',logout_user,name='logout')
     
 ]

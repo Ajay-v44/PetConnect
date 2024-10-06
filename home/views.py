@@ -43,9 +43,6 @@ def login_user(request):
 def register_user(request):
     try:
         if request.method == "POST":
-            messages.warning(request, 'Username / Email already exists')
-            
-            print("post")
             if User.objects.filter(email=request.POST['regemail']).exists() or User.objects.filter(username=request.POST['username']).exists():
                 messages.warning(request, 'Username / Email already exists')
             else:
@@ -98,20 +95,6 @@ def viewPublicProfile(request, username):
         print(e)
         return redirect(page404)
     
-@login_required(login_url='/login')
-def createpost(request):
-    try:
-        if request.method=="POST":
-            Posts.objects.create(
-                title=request.POST['title'],description=request.POST['description'],post_type=request.POST['category'],image=request.FILES.get('image'),user=request.user)
-            messages.info(request, "Post Created Sccessfully")
-            return redirect(index)
-        return render(request, 'create_post.html')
-          
-    except Exception as e:
-        print(e)
-        return redirect(page404)
-
 def get_posts(request):
     try:
         posts=Posts.objects.all()
@@ -119,6 +102,25 @@ def get_posts(request):
     except Exception as e:
         print(e)
         return redirect(page404)
+    
+@login_required(login_url='/login')
+def createpost(request):
+    try:
+        if request.method=="POST":
+            Posts.objects.create(
+                title=request.POST['title'],description=request.POST['description'],post_type=request.POST['category'],image=request.FILES.get('image'),user=request.user)
+            messages.info(request, "Post Created Sccessfully")
+            return redirect(get_posts)
+        return render(request, 'create_post.html')
+          
+    except Exception as e:
+        print(e)
+        return redirect(page404)
+
+def logout_user(request):
+    messages.info(request, "Thankyou For Spending Time With Pet Connect.")
+    logout(request)
+    return redirect(login_user)
 
 def page404(request):
     

@@ -26,14 +26,14 @@
         <img
           src="{{data.banner.url}}"
           alt=""
-          class="max-w-4xl max-h-md rounded-lg object-fill overflow-hidden"
+          class="max-w-3xl max-h-md rounded-lg object-fill overflow-hidden"
 
         />
         {% else %}
         <img
           src="{% static 'img/wallpaper.jpg' %}"
           alt=""
-          class="max-w-4xl max-h-md rounded-lg object-fill overflow-hidden"
+          class="max-w-3xl max-h-md rounded-lg object-fill overflow-hidden"
         />
         {% endif %}
         
@@ -44,13 +44,13 @@
         <img
             src="{{data.profilepicture.url}}"
             alt=""
-            class="max-w-sm max-h-xs border border-orange-400 rounded-full object-fill cursor-pointer overflow-hidden"
+            class="max-w-xs max-h-xs border border-orange-400 rounded-full object-fill cursor-pointer overflow-hidden"
           />
           {% else %}
           <img
           src="{% static 'img/profilepic.webp' %}"
           alt=""
-          class="max-w-sm max-h-xs border border-orange-400 rounded-full object-fill cursor-pointer overflow-hidden"
+          class="max-w-xs max-h-xs border border-orange-400 rounded-full object-fill cursor-pointer overflow-hidden"
         />
         {% endif %}
       </div>
