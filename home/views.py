@@ -66,7 +66,7 @@ def register_user(request):
 def addUserProfile(request):
     try:
         if request.method == "POST":
-            UserProfile.objects.create(user=request.user, profilepicture=request.FILES.get('profile'), banner=request.FILES.get(
+            UserProfile.objects.create(user=request.user, username=request.user,profilepicture=request.FILES.get('profile'),user_type="normal", banner=request.FILES.get(
                 'banner'), about=request.POST['about'], phone_number=request.POST['phone1'], phone_number_2=request.POST['phone2'], fb=request.POST['facebook'], twitter=request.POST['twitter'], insta=request.POST['instagram'])
             messages.info(request, "Data Updated Sccessfully")
             return redirect(index)
@@ -75,7 +75,25 @@ def addUserProfile(request):
         print(e)
         return redirect(page404)
  
- 
-        
+@login_required(login_url='/login')
+def user_profile(request):
+    try:
+        query = UserProfile.objects.filter(user=request.user)
+        if query:
+            return render(request, 'profile.html', {"query": query})
+        else:
+            return redirect(addUserProfile)
+    except Exception as e:
+        print(e)
+        return redirect(page404)
+
+def viewPublicProfile(request, username):
+    try:
+        query = UserProfile.objects.filter(username=username)
+        return render(request, 'public_profile.html', {"query": query})
+    except Exception as e:
+        print(e)
+        return redirect(page404)
+  
 def page404(request):
     return render(request, '404.html')

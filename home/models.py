@@ -15,3 +15,19 @@ class UserProfile(models.Model):
     twitter = models.CharField(max_length=150, blank=True)
     fb = models.CharField(max_length=150, blank=True)
     insta = models.CharField(max_length=150, blank=True)
+    username = models.CharField(max_length=150,blank=True,null=True)
+    def __str__(self):
+        return f"{self.phone_number}"
+
+    class Meta:
+        db_table = 'UserProfile'
+
+
+class Posts(models.Model):
+    title = models.CharField(max_length=150)
+    description = models.TextField()
+    post_type=models.CharField(max_length=50)
+    image =  models.ImageField(
+        upload_to='images', height_field=None, width_field=None, max_length=None, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField(auto_now=True)
